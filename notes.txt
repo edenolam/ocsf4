@@ -1,0 +1,93 @@
+le composant EventDispatcher qui implémente deux patterns de programmation objet : Observateur et Mediateur.
+
+Le composant EventDispatcher en bref
+
+Une application Symfony dispose d'un répartiteur d'événements qui va envoyer une série d'événements natifs et métiers.
+Ensuite, des objets, qui peuvent être des écouteurs ou encore des souscripteurs d'événements,
+peuvent écouter ces événements et exécuter des fonctions à partir de données qui sont transmises par l'événement.
+
+Un écouteur d'événements est une simple classe PHP disposant de fonctions publiques qui prennent en argument l'événement écouté.
+
+
+Tout d'abord, le name du tag "kernel.event_listener" est propre au framework. Tagger ce service permet de le déclarer en tant qu'écouteur.
+
+Ensuite, l'event est le nom de l'événement qui sera envoyé par le répartiteur.
+
+Enfin, la method permet de spécifier quelle méthode de la classe sera exécutée.
+Il est possible également de ne pas la déclarer si l'on utilise la syntaxe suivante : "on" + "nom de l'événement en CamelCase" (ex. : onFoo(FooEvent $event)).
+
+Si vous n'écoutez qu'un seul événement, vous pouvez également utiliser la fonction   __invoke()
+
+Une autre façon de réagir à un événement est d'utiliser un souscripteur d'événements.
+
+Le souscripteur d'événements est mieux adapté pour écouter de multiples événements, et il contient la liste des événements à écouter.
+La classe doit impérativement implémenter l'interface Symfony\Component\EventDispatcher\EventSubscriberInterface
+     
+     ----------------------------------------------------------
+
+Dans le cycle de vie d'une application Symfony, de nombreux événements sont disponibles pour vous permettre d'altérer le comportement de l'application. Parmi les plus utiles :
+
+    kernel.request : envoyé avant que le contrôleur ne soit déterminé, au plus tôt dans le cycle de vie.
+
+    kernel.controller : envoyé après détermination du contrôleur, mais avant son exécution.
+
+    kernel.response : envoyé après que le contrôleur retourne un objet Response.
+
+    kernel.terminate : envoyé après que la réponse est envoyée à l'utilisateur.
+
+    kernel.exception : envoyé si une exception est lancée par l'application.
+    
+--------------------------------------------------------------------
+
+un événement est un objet quelconque, vous êtes libre d'utiliser n'importe quel objet tant qu'il étend la classe Event du composant EventDispatcher.
+
+
+Si vous n'avez aucune donnée à transférer dans vos événements, vous pouvez utiliser la classe Event du composant EventDispatcher.
+
+
+    Grâce à l'autowiring, l'essentiel du temps, nous n'avons rien de spécial à faire pour que nos objets soient automatiquement retrouvés par le container et accessibles dans nos services et nos contrôleurs.
+
+    L'autoconfiguration permet d'ajouter des tags à nos services s'ils implémentent une interface spécifique et les services tagués sont traités différemment par le framework.
+
+la programmation événementielle à l'aide du composant EventDispatcher.
+
+
+Le principal intérêt est que l'on peut changer le comportement d'une application sans en changer le code, et ajouter de nombreux comportements sur une même action, sans pour autant que ces comportements soient liés entre eux.
+
+Nous avons vu que Symfony dispose de nombreux événements natifs qui sont envoyés aux écouteurs durant le cycle de vie de l'application. 
+
+Enfin, il est également possible de créer et de "dispatcher" ses propres événements métiers. 
+
+Il faut créer l'événement qui doit "implémenter" la classe Event de Symfony, à laquelle on peut passer des informations au besoin. Ensuite, il suffit de faire appel à l'EventDispatcher pour envoyer l'information à tous les écouteurs concernés.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
